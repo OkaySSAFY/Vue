@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>인기순위</h1>
-    <div id="carouselPopular" class="carousel slide" data-bs-ride="carousel">
+    <h1>현재 상영중</h1>
+    <div id="carouselNowPlaying" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
-          data-bs-target="#carouselPopular"
+          data-bs-target="#carouselNowPlaying"
           v-for="(group, index) in groupedMovies"
           :key="index"
           :data-bs-slide-to="index"
@@ -32,7 +32,7 @@
       </div>
       <a
         class="carousel-control-prev"
-        href="#carouselPopular"
+        href="#carouselNowPlaying"
         role="button"
         data-bs-slide="prev"
       >
@@ -41,7 +41,7 @@
       </a>
       <a
         class="carousel-control-next"
-        href="#carouselPopular"
+        href="#carouselNowPlaying"
         role="button"
         data-bs-slide="next"
       >
@@ -56,7 +56,7 @@
 import axios from "axios";
 
 export default {
-  name: "PopularView",
+  name: "NowPlayingView",
   data() {
     return {
       movies: [],
@@ -64,7 +64,6 @@ export default {
   },
   computed: {
     groupedMovies() {
-      // 3개씩 그룹으로 나누기 위해 movies 배열을 조각으로 나눕니다.
       const chunkSize = 4;
       const chunks = [];
       for (let i = 0; i < this.movies.length; i += chunkSize) {
@@ -76,7 +75,7 @@ export default {
   methods: {
     getMovies() {
       axios
-        .get("https://api.themoviedb.org/3/movie/popular", {
+        .get("https://api.themoviedb.org/3/movie/now_playing", {
           params: {
             api_key: "8dd2aae210680df1fc539934fb5f5ab5",
             language: "ko-KR",
@@ -93,7 +92,7 @@ export default {
     },
     getPoster(posterPath) {
       if (posterPath) {
-        return `https://image.tmdb.org/t/p/w500/${posterPath}`;
+        return `https://image.tmdb.org/t/p/w500${posterPath}`;
       }
     },
   },

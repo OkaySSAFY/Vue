@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts',
+    'articles',
     'movies',
     # cors
     'corsheaders',
@@ -158,5 +159,4 @@ REST_AUTH = {"SESSION_LOGIN": False, "USE_JWT": True}
 SIMPLE_JWT = {
     "ALLOW_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-
 }

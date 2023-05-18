@@ -7,19 +7,29 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'HomeView',
     component: HomeView
   },
-
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/LogInView.vue')
-  },  {
-    path: '/signup',
-    name: 'signup',
+    path: '/accounts/signup',
+    name: 'SignUpView',
 
-    component: () => import('../views/SignUpView.vue')
+    component: () => import('../views/accounts/SignUpView.vue')
+  },
+  {
+    path: '/accounts/login',
+    name: 'LogInView',
+    component: () => import('../views/accounts/LogInView.vue')
+  },
+  {
+    path: '/articles',
+    name: 'ArticleView',
+    component: () => import('../views/ArticleView.vue')
+  },
+  {
+    path: '/create',
+    name: 'CreateView',
+    component: () => import('../views/CreateView.vue')
   }
 ]
 

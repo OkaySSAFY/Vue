@@ -2,7 +2,9 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <router-link class="navbar-brand" :to="{ name: 'HomeView' }"
+          >Reelix</router-link
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -16,9 +18,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <router-link to="/">Home</router-link>
-            <router-link to="/login">로그인</router-link>
-            <router-link to="/signup">회원가입</router-link>
+            <router-link :to="{ name: 'HomeView' }" class="nav-link m-2"
+              >Home</router-link
+            >
+            <router-link
+              :to="{ name: 'LogInView' }"
+              class="nav-link m-2 btn btn-primary"
+              v-if="!isLoggedIn"
+              >로그인</router-link
+            >
+            <router-link :to="{ name: 'SignUpView' }" class="nav-link m-2" v-if="!isLoggedIn"
+              >회원가입</router-link
+            >
+            <router-link :to="{ name: 'ArticleView' }" class="nav-link m-2"
+              >후기게시판</router-link
+            >
+            <b-button variant="secondary" @click="logout" v-if="isLoggedIn"
+              >로그아웃</b-button
+            >
           </div>
         </div>
       </div>
@@ -27,6 +44,26 @@
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.username = "";
+      this.password = "";
+
+      this.$store.commit("RESET_STATE");
+      this.$store.commit("SET_LOGIN_STATUS", false);
+      console.log("로그아웃 성공!!");
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+  },
+};
+</script>
 
 <style>
 #app {
