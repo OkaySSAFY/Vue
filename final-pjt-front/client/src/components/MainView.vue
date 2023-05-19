@@ -1,19 +1,5 @@
 <template>
-  <div class="main">
-    <div class="container">
-      <form class="d-flex" role="search">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"   
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success" type="submit">Search
-        <!-- <i class="material-icons">search</i>    -->
-        </button>
-      </form>
-    </div>
-  </div>
+  <div class="main"></div>
 </template>
 
 <script>
@@ -25,6 +11,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.with-background {
+  background-image: url('@/assets/AboutTime.jpg');
+}
+
 h3 {
   margin: 40px 0 0;
 }

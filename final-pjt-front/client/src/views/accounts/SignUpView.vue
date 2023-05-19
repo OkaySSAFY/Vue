@@ -32,48 +32,50 @@
       ></b-form-input>
     </b-row>
     <b-button variant="success" @click="signup"> 회원가입 </b-button>
-
   </b-container>
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 
 export default {
   name: "SignUpView",
   data() {
     return {
-        username: "",
-        password1: "",
-        password2: "",
-    }
+      username: "",
+      password1: "",
+      password2: "",
+    };
   },
   methods: {
     signup() {
       axios({
-          method: "post",
-          url: "http://127.0.0.1:8000/auth/signup/",
-          data: {
-              username: this.username,
-              password1: this.password1,
-              password2: this.password2
-          }
+        method: "post",
+        url: "http://127.0.0.1:8000/auth/signup/",
+        data: {
+          username: this.username,
+          password1: this.password1,
+          password2: this.password2,
+        },
       })
-      .then((res)=>{
-          console.log(res.data)
-      })
-      .catch((err)=>{
-          console.log(err)
-      })
-    }
-  }
+        .then((res) => {
+          console.log(res);
+          this.$store.dispatch("signUp", res.data);
+          alert("로그인 창으로 이동합니다");
+          this.$router.push({ name: "LogInView" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
 
 <style>
 .signup-form {
-    background-color: rgb(230, 241, 245);
-    box-shadow: 20px 20px 10px 0px rgb(183, 185, 187);
-    border-radius: 10px;
+  background-color: rgb(230, 241, 245);
+  box-shadow: 20px 20px 10px 0px rgb(183, 185, 187);
+  border-radius: 10px;
 }
 </style>

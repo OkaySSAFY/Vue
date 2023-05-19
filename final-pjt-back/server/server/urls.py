@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("accounts.urls")),
     path('articles/', include("articles.urls")),
+    path('movies/', include("movies.urls")),
     path('auth/', include("dj_rest_auth.urls")),
     path('auth/signup/', include("dj_rest_auth.registration.urls")),
 ]

@@ -9,6 +9,7 @@
 
 <script>
 import ArticleList from "@/components/ArticleList.vue";
+// import axios from 'axios'
 
 export default {
   name: "ArticleView",
@@ -24,15 +25,43 @@ export default {
     this.getArticles();
   },
   methods: {
+    getArticles() {
+      if (this.isLogin) {
+        this.$store.dispatch("getArticles");
+      } else {
+        alert("로그인이 필요합니다!");
+        this.$router.push({ name: "LogInView" });
+      }
+    },
     // 로그인이 되어있으면 getArticles action 실행
     // 로그인 X라면 login 페이지로 이동
-    getArticles() {
-      this.$store.dispatch("getArticles");
-      // } else {
-      //   alert('로그인이 필요한 페이지입니다...')
-      //   this.$router.push({ name : 'LogInView'})
-      // }
-    },
+    // getArticles() {
+    //   this.$store.dispatch("getArticles");
+    // } else {
+    //   alert('로그인이 필요한 페이지입니다...')
+    //   this.$router.push({ name : 'LogInView'})
+    // }
+    // getArticles() {
+    //   if (this.isLogin) {
+    //     axios({
+    //       method: "get",
+    //       url: "http://127.0.0.1:8000/articles/",
+    //       headers: {
+    //         Authorization: `Bearer ${this.$store.state.token}`,
+    //       },
+    //     })
+    //       .then((res, context) => {
+    //         console.log(res, context);
+    //         this.$store.commit("GET_ARTICLES", res.data);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       });
+    //   }
+    // else {
+    //   alert("로그인이 필요한 페이지입니다...");
+    //   this.$router.push({ name: "LogInView" });
+    // }
   },
 };
 </script>

@@ -28,13 +28,13 @@ export default {
       const title = this.title
       const content = this.content
 
-      if (!title) {
-        alert('제목 입력해주세요')
-        return
-      } else if (!content){
-        alert('내용 입력해주세요')
-        return
-      }
+      // if (!title) {
+      //   alert('제목 입력해주세요')
+      //   return
+      // } else if (!content){
+      //   alert('내용 입력해주세요')
+      //   return
+      // }
       axios({
         method: 'post',
         url: `${API_URL}/articles/`,
@@ -43,8 +43,9 @@ export default {
           Authorization: `Bearer ${this.$store.state.token}`,
         },
       })
-      .then(() => {
-        // console.log(res)
+      .then((res) => {
+        console.log(res)
+        // this.$store.commit("GET_ARTICLES", res.data);
         this.$router.push({name: 'ArticleView'})
       })
       .catch((err) => {

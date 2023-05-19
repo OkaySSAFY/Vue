@@ -9,23 +9,23 @@
         placeholder="ID"
         v-model="username"
         :state="nameState"
-        aria-describedby="input-live-feedback" 
+        aria-describedby="input-live-feedback"
         trim
       ></b-form-input>
 
       <b-form-invalid-feedback id="input-username-feedback" class="text-right">
-      아이디 4글자 이상 입력
+        아이디 4글자 이상 입력
       </b-form-invalid-feedback>
-      </b-row>
+    </b-row>
 
-      <b-row>
+    <b-row>
       <label for="input-password">비밀번호</label>
       <b-form-input
         id="input-password"
         placeholder="PASSWORD"
         v-model="password"
         :state="passwordState"
-        aria-describedby="input-password-feedback" 
+        aria-describedby="input-password-feedback"
         trim
         type="password"
         @keyup.enter="login"
@@ -33,7 +33,7 @@
       ></b-form-input>
 
       <b-form-invalid-feedback id="input-password-feedback" class="text-right">
-      비밀번호 6글자 이상 입력
+        비밀번호 6글자 이상 입력
       </b-form-invalid-feedback>
     </b-row>
     <b-button variant="secondary" @click="login">로그인</b-button>
@@ -41,52 +41,67 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 
 export default {
-    data () {
-        return {
-            username: "",
-            password: "",
-        }
+  name: "LoginView",
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  computed: {
+    nameState() {
+      return this.username.length >= 4 ? true : false;
     },
-    computed : {
-      nameState() {
-        return this.username.length >= 4 ? true : false
-      },
-      passwordState() {
-        return this.password.length >= 6 ? true : false    
-      }
+    passwordState() {
+      return this.password.length >= 6 ? true : false;
     },
-    methods : {
-      login() {
-        const username = this.username
-        const password = this.password
-
-        axios({
-          method: "post",
-          url: "http://127.0.0.1:8000/auth/login/",
-          data: {
-            username, password
-          }
+  },
+  methods: {
+    login() {
+      axios({
+        method: "post",
+        url: "http://127.0.0.1:8000/auth/login/",
+        data: {
+          username: this.username,
+          password: this.password,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          this.$store.dispatch("login", res.data);
+          this.$router.push({ name: "HomeView" });
+          // this.$store.commit('SAVE_TOKEN', res.data.key)
+          // this.$store.commit("SET_LOGIN_STATUS", true)
         })
-        .then((res)=> {
-          console.log(res)
-          this.$store.commit('SAVE_TOKEN', res.data.key)
-          this.$store.commit("SET_LOGIN_STATUS", true)
-        })
-        .catch((err)=> {
-          console.log(err)
-        })
-      }
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    //     loginUser() {
+    // const credentials = {
+    //   username: this.username,
+    //   password: this.password,
+    // };
+    // this.$store.dispatch('login', credentials)
+    //   .then(() => {
+    //     // 로그인 성공 시 처리할 내용
+    //   })
+    //   .catch((error) => {
+    //     // 로그인 실패 시 처리할 내용
+    //     console.log(error)
+    //   });
+    // }
+  },
 };
 </script>
 
 <style>
 .login-form {
-    background-color: rgb(230, 241, 245);
-    box-shadow: 20px 20px 10px 0px rgb(183, 185, 187);
-    border-radius: 10px;
+  background-color: rgb(230, 241, 245);
+  box-shadow: 20px 20px 10px 0px rgb(183, 185, 187);
+  border-radius: 10px;
 }
 </style>

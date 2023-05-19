@@ -1,14 +1,9 @@
 <template>
-  <div>
-    <h5>{{ article.id }}</h5>
-    <p>작성자: {{ article.username }}</p>
-    <p>{{ article.title }}</p>
-    <router-link :to="{
-      name: 'DetailView',
-      params: {id: article.id }}">
-      [DETAIL]
-    </router-link>
-    <hr>
+  <div class="box">
+    <h1>{{ article.title }}</h1>
+    <h2>{{ article.content }}</h2>
+    <hr />
+    <p>작성자 : {{ article.username }}</p>
   </div>
 </template>
 
@@ -22,5 +17,10 @@ export default {
 </script>
 
 <style>
-
+.box {
+  border: 1px solid black;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
