@@ -14,7 +14,7 @@
     <MainView />
     </div>
     <div class="container">
-      <MovieJson />
+      <!-- <MovieJson /> -->
       <NowPlayingView />
       <PopularView />
     </div>
@@ -25,7 +25,7 @@
 // @ is an alias to /src
 import KeywordView from "@/components/KeywordView.vue";
 import MainView from "@/components/MainView.vue";
-import MovieJson from "@/components/MovieJson.vue";
+// import MovieJson from "@/components/MovieJson.vue";
 import NowPlayingView from "@/components/NowPlayingView.vue";
 import PopularView from "@/components/PopularView.vue";
 
@@ -34,7 +34,7 @@ export default {
   components: {
     KeywordView,
     MainView,
-    MovieJson,
+    // MovieJson,
     NowPlayingView,
     PopularView,
   },

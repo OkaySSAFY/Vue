@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+
 const API_URL = 'http://127.0.0.1:8000'
 
 export default {
@@ -24,6 +25,7 @@ export default {
     }
   },
   methods: {
+      // 게시글 작성 로직
     createArticle() {
       const title = this.title
       const content = this.content

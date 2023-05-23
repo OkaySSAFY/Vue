@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1>후기 게시판</h1>
-    <router-link :to="{ name: 'CreateView' }">[작성하기]</router-link>
+    <router-link :to="{ name: 'CreateView' }" v-if="isLoggedIn"
+      >[작성하기]</router-link
+    >
     <ArticleList />
     <hr />
   </div>
@@ -20,14 +22,19 @@ export default {
     isLogin() {
       return this.$store.getters.isLogin; // 로그인 여부
     },
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
   },
   created() {
     this.getArticles();
   },
   methods: {
+
     getArticles() {
       if (this.isLogin) {
         this.$store.dispatch("getArticles");
+
       } else {
         alert("로그인이 필요합니다!");
         this.$router.push({ name: "LogInView" });

@@ -14,13 +14,11 @@ from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerial
 from .models import Article, Comment
 
 
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def article_list(request):
     if request.method == 'GET':
-        # articles = Article.objects.all()
-        articles = get_list_or_404(Article)
+        articles = Article.objects.all()
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
 
@@ -41,7 +39,7 @@ def article_detail(request, article_pk):
         serializer = ArticleSerializer(article)
         print(serializer.data)
         return Response(serializer.data)
-    
+
     elif request.method == 'DELETE':
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -80,8 +78,6 @@ def comment_detail(request, comment_pk):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
-
-    
 
 
 @api_view(['POST'])

@@ -27,7 +27,6 @@ export default new Vuex.Store({
     //auth
     SAVE_TOKEN(state, token) {
       state.token = token;
-      // router.push({ name: "HomeView" });
     },
     // RESET_STATE(state) {
     //   state.token = null; // 토큰 초기화
@@ -56,7 +55,6 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
         });
-      // console.log(context)
     },
     signUp(context, data) {
       context.commit("SAVE_TOKEN", data.access);
@@ -65,7 +63,6 @@ export default new Vuex.Store({
       context.commit("SAVE_TOKEN", data.access);
       context.commit("SET_LOGIN_STATUS", true); // 로그인 상태 변경
     },
-
     // login(context, credentials) {
     //   return new Promise((resolve, reject) => {
     //     axios

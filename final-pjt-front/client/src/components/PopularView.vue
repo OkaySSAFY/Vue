@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>인기순위</h1>
+    <h1>인기 영화</h1>
     <div id="carouselPopular" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
@@ -20,12 +20,19 @@
         >
           <div class="row">
             <div class="col-3" v-for="movie in group" :key="movie.id">
-              <img
-                :src="getPoster(movie.poster_path)"
-                class="d-block w-100"
-                :alt="movie.title"
-                style="height: 40rem"
-              />
+              <div class="movie-item">
+                <router-link
+                  :to="{ name: 'MovieDetail', params: { id: movie.id.toString() } }"
+                >
+                <img
+                  :src="getPoster(movie.poster_path)"
+                  class="d-block w-100"
+                  :alt="movie.title"
+                  style="height: 30rem"
+                />
+              </router-link>
+                <h3>{{ movie.title }}</h3>
+              </div>
             </div>
           </div>
         </div>
@@ -53,7 +60,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+const API_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "PopularView",
@@ -64,7 +72,6 @@ export default {
   },
   computed: {
     groupedMovies() {
-      // 3개씩 그룹으로 나누기 위해 movies 배열을 조각으로 나눕니다.
       const chunkSize = 4;
       const chunks = [];
       for (let i = 0; i < this.movies.length; i += chunkSize) {
@@ -74,33 +81,28 @@ export default {
     },
   },
   methods: {
-    getMovies() {
-      axios
-        .get("https://api.themoviedb.org/3/movie/popular", {
-          params: {
-            api_key: "8dd2aae210680df1fc539934fb5f5ab5",
-            language: "ko-KR",
-            page: 1,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          this.movies = res.data.results;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     getPoster(posterPath) {
       if (posterPath) {
-        return `https://image.tmdb.org/t/p/w500/${posterPath}`;
+        return `https://image.tmdb.org/t/p/w500${posterPath}`;
       }
     },
   },
   created() {
-    this.getMovies();
+    axios
+      .get(`${API_URL}/movies/`) // 실제로는 Django 서버의 API 엔드포인트를 사용해야 합니다.
+      .then((response) => {
+        // release_date가 2023-05-01 이후인 데이터만 가져오도록 필터링
+        this.movies = response.data.filter(movie => movie.vote_average >= '8.3');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 };
 </script>
 
-<style></style>
+<style>
+.movie-item {
+  text-align: center;
+}
+</style>

@@ -1,37 +1,63 @@
 <template>
-  <b-container role="group" class="p-5 signup-form">
-    <h1>회원가입</h1>
-    <b-row>
-      <label for="input-username">아이디</label>
-      <b-form-input
-        id="input-username"
-        placeholder="ID"
-        v-model="username"
-      ></b-form-input>
-    </b-row>
+  <b-container fluid>
+    <b-row class="min-vh-100 justify-content-center">
+      <b-col md="6" lg="6" class="p-0">
+        <!-- <div>
+          <img src="@/assets/signupAbout.png" alt="">
+        </div> -->
+        <div class="image-container"></div>
+      </b-col>
+      <b-col md="6" lg="6" class="p-4">
+        <div class="login-form p-4">
+          <h1 class="text-center mb-4"><strong>Sign up to Reelix</strong></h1>
 
-    <b-row>
-      <label for="input-password1">비밀번호1</label>
-      <b-form-input
-        id="input-password1"
-        placeholder="PASSWORD1"
-        v-model="password1"
-        trim
-        type="password"
-      ></b-form-input>
-    </b-row>
+          <hr />
+          <br />
 
-    <b-row>
-      <label for="input-password2">비밀번호2</label>
-      <b-form-input
-        id="input-password2"
-        placeholder="PASSWORD2"
-        v-model="password2"
-        trim
-        type="password"
-      ></b-form-input>
+          <b-row class="justify-content-center">
+            <label for="input-username">아이디</label>
+            <b-form-input
+              id="input-username"
+              placeholder="ID"
+              v-model="username"
+              aria-describedby="input-live-feedback"
+              trim
+              style="width: 70%"
+            ></b-form-input>
+            <!-- </b-col> -->
+          </b-row>
+
+          <br />
+          <b-row class="align-items-center justify-content-center">
+            <label for="input-password1">비밀번호1</label>
+
+            <b-form-input
+              id="input-password1"
+              placeholder="PASSWORD1"
+              v-model="password1"
+              trim
+              type="password"
+              style="width: 70%"
+            ></b-form-input>
+          </b-row>
+          <br />
+          <b-row class="align-items-center justify-content-center">
+            <label for="input-password2">비밀번호2</label>
+
+            <b-form-input
+              id="input-password2"
+              placeholder="PASSWORD2"
+              v-model="password2"
+              trim
+              type="password"
+              style="width: 70%"
+            ></b-form-input>
+          </b-row>
+          <br />
+          <b-button class="custom-button" @click="signup">회원가입</b-button>
+        </div>
+      </b-col>
     </b-row>
-    <b-button variant="success" @click="signup"> 회원가입 </b-button>
   </b-container>
 </template>
 
@@ -72,10 +98,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .signup-form {
-  background-color: rgb(230, 241, 245);
-  box-shadow: 20px 20px 10px 0px rgb(183, 185, 187);
-  border-radius: 10px;
+  margin: auto;
+}
+
+.image-container {
+  background-image: url("@/assets/signupAbout.png");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+.custom-button {
+  background-color: #8D81A6;
+  color: #fff;
+  border: none;
 }
 </style>

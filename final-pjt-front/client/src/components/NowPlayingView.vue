@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>현재 상영중</h1>
+    <h1>현재 상영중 | 개봉 예정작</h1>
     <div id="carouselNowPlaying" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
@@ -20,12 +20,22 @@
         >
           <div class="row">
             <div class="col-3" v-for="movie in group" :key="movie.id">
-              <img
-                :src="getPoster(movie.poster_path)"
-                class="d-block w-100"
-                :alt="movie.title"
-                style="height: 40rem"
-              />
+              <div class="movie-item">
+                <router-link
+                  :to="{
+                    name: 'MovieDetail',
+                    params: { id: movie.id.toString() },
+                  }"
+                >
+                  <img
+                    :src="getPoster(movie.poster_path)"
+                    class="d-block w-100"
+                    :alt="movie.title"
+                    style="height: 30rem"
+                  />                  
+                </router-link>
+                  <h3>{{ movie.title }}</h3>
+              </div>
             </div>
           </div>
         </div>
@@ -54,6 +64,7 @@
 
 <script>
 import axios from "axios";
+const API_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "NowPlayingView",
@@ -73,23 +84,6 @@ export default {
     },
   },
   methods: {
-    getMovies() {
-      axios
-        .get("https://api.themoviedb.org/3/movie/now_playing", {
-          params: {
-            api_key: "8dd2aae210680df1fc539934fb5f5ab5",
-            language: "ko-KR",
-            page: 1,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          this.movies = res.data.results;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     getPoster(posterPath) {
       if (posterPath) {
         return `https://image.tmdb.org/t/p/w500${posterPath}`;
@@ -97,9 +91,23 @@ export default {
     },
   },
   created() {
-    this.getMovies();
+    axios
+      .get(`${API_URL}/movies/`) // 실제로는 Django 서버의 API 엔드포인트를 사용해야 합니다.
+      .then((response) => {
+        // release_date가 2023-05-01 이후인 데이터만 가져오도록 필터링
+        this.movies = response.data.filter(
+          (movie) => movie.release_date >= "2023-05-01"
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 };
 </script>
 
-<style></style>
+<style>
+.movie-item {
+  text-align: center;
+}
+</style>

@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -18,3 +20,14 @@ from .serializers import UserSerializer
 def userinfo(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+
+def ProfileView(request, username):
+    User = get_user_model()
+    user = User.objects.get(username=username)  # 현재 사용자
+    profile = {
+        'name': user.username,
+        'email': user.email,
+        # 필요한 프로필 정보를 추가하세요
+    }
+    return JsonResponse(profile)

@@ -1,9 +1,85 @@
 <template>
   <div id="app">
     <!-- 네비게이션 바 -->
-    <nav class="navbar navbar-expand-lg bg-light" style="height: 60px">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <router-link :to="{ name: 'HomeView' }" class="nav-link m-2">
+          <div class="d-flex justify-content-center">
+            <i class="material-icons">home</i><span>Home</span>
+          </div>
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'ArticleView' }" class="nav-link m-2"
+          >Review</router-link
+        >
+      </li>
+      <li class="nav-item">
+        <router-link
+          :to="{ name: 'ProfileView' }"
+          class="nav-link m-2"
+          v-if="!isLoggedIn"
+          >Profile</router-link
+        >
+      </li>
+      <li class="nav-item">
+        <router-link
+          :to="{ name: 'LogInView' }"
+          class="nav-link m-2"
+          v-if="!isLoggedIn"
+          >Sign In</router-link
+        >
+      </li>
+      <li class="nav-item">
+        <router-link
+          :to="{ name: 'SignUpView' }"
+          class="nav-link m-2"
+          v-if="!isLoggedIn"
+          >Sign Up
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <div class="nav-link m-2" @click="logout" v-if="isLoggedIn">Logout</div>
+      </li>
+
+      <router-link
+        class="navbar-brand mx-3 fs-3"
+        style="color: #d99696"
+        :to="{ name: 'HomeView' }"
+      >Reelix
+      </router-link>
+
+      <!-- 서치바 -->
+      
+<div class="container" id="search-bar">
+  <form class="d-flex" role="search" action="{% url 'search_results' %}" method="GET">
+    <input
+      class="form-control me-2"
+      type="search"
+      name="query"
+      placeholder="Search"
+      aria-label="Search"
+    />
+    <button class="btn btn-outline-secondary" type="submit">
+      <div class="d-flex justify-content-center">
+        <span>Search</span>
+        <i class="material-icons">search</i>
+      </div>
+    </button>
+  </form>
+</div>
+
+
+
+
+
+
+    </ul>
+
+    <!-- 네비게이션 바 -->
+    <!-- <nav class="navbar navbar-expand-md bg-light" style="height: 60px">
       <div class="container-fluid fs-6 fw-bold">
-        <router-link class="navbar-brand mx-3 fs-3" :to="{ name: 'HomeView' }">
+        <router-link class="navbar-brand mx-3 fs-3" style="color:#D99696;" :to="{ name: 'HomeView' }">
           Reelix
         </router-link>
         <button
@@ -42,24 +118,10 @@
             <b-button variant="secondary" @click="logout" v-if="isLoggedIn"
               >Logout</b-button
             >
-          </div>
-          <div class="container mb-3" id="search-bar">
-            <form class="d-flex" role="search">
-              <input
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-secondary" type="submit">
-                Search
-                <!-- <i class="material-icons">search</i>    -->
-              </button>
-            </form>
-          </div>
-        </div>
+          </div> -->
+    <!--</div>
       </div>
-    </nav>
+    </nav> -->
 
     <router-view />
   </div>
