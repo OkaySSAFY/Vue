@@ -31,10 +31,10 @@
                     :src="getPoster(movie.poster_path)"
                     class="d-block w-100"
                     :alt="movie.title"
-                    style="height: 30rem"
+                    style="height: 30rem; border-radius: 10px;"
                   />                  
                 </router-link>
-                  <h3>{{ movie.title }}</h3>
+                  <!-- <h3>{{ movie.title }}</h3> -->
               </div>
             </div>
           </div>

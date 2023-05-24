@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <!-- 네비게이션 바 -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs align-items-center">
       <li class="nav-item">
         <router-link :to="{ name: 'HomeView' }" class="nav-link m-2">
           <div class="d-flex justify-content-center">
-            <i class="material-icons">home</i><span>Home</span>
+            <i class="material-icons" style="color: #d99696">home</i>
+            <!-- <span>Home</span> -->
           </div>
         </router-link>
       </li>
@@ -16,9 +17,10 @@
       </li>
       <li class="nav-item">
         <router-link
-          :to="{ name: 'ProfileView' }"
+          :to="{ name: 'ProfileView', params: { username: this.$store.state.user.username }}"
           class="nav-link m-2"
-          v-if="!isLoggedIn"
+          style="color: #d99696"
+          v-if="isLoggedIn"
           >Profile</router-link
         >
       </li>
@@ -39,89 +41,39 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <div class="nav-link m-2" @click="logout" v-if="isLoggedIn">Logout</div>
+        <div
+          class="nav-link m-2"
+          style="color: #d99696"
+          @click="logout"
+          v-if="isLoggedIn"
+        >
+          Logout
+        </div>
       </li>
+
+      <!-- 서치바 -->
+
+      <div class="container" id="search-bar">
+        <form class="d-flex" role="search">
+          <input placeholder="Search" /> <router-link :to="{ name: 'SearchMovieView' }">
+          <button class="btn btn-outline-secondary" type="submit">
+            <div class="d-flex justify-content-center">
+              <span>Search</span>
+
+             
+                <i class="material-icons">search</i>
+            </div>
+          </button></router-link>
+        </form>
+      </div>
 
       <router-link
         class="navbar-brand mx-3 fs-3"
-        style="color: #d99696"
+        style="color: #d99696; padding: 5px"
         :to="{ name: 'HomeView' }"
-      >Reelix
+        ># Reelix
       </router-link>
-
-      <!-- 서치바 -->
-      
-<div class="container" id="search-bar">
-  <form class="d-flex" role="search" action="{% url 'search_results' %}" method="GET">
-    <input
-      class="form-control me-2"
-      type="search"
-      name="query"
-      placeholder="Search"
-      aria-label="Search"
-    />
-    <button class="btn btn-outline-secondary" type="submit">
-      <div class="d-flex justify-content-center">
-        <span>Search</span>
-        <i class="material-icons">search</i>
-      </div>
-    </button>
-  </form>
-</div>
-
-
-
-
-
-
     </ul>
-
-    <!-- 네비게이션 바 -->
-    <!-- <nav class="navbar navbar-expand-md bg-light" style="height: 60px">
-      <div class="container-fluid fs-6 fw-bold">
-        <router-link class="navbar-brand mx-3 fs-3" style="color:#D99696;" :to="{ name: 'HomeView' }">
-          Reelix
-        </router-link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse bg-light" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <router-link :to="{ name: 'HomeView' }" class="nav-link m-2">
-              <i class="material-icons">home</i>
-              Home
-            </router-link>
-            <router-link
-              :to="{ name: 'LogInView' }"
-              class="nav-link m-2"
-              v-if="!isLoggedIn"
-              >Sign In</router-link
-            >
-            <router-link
-              :to="{ name: 'SignUpView' }"
-              class="nav-link m-2"
-              v-if="!isLoggedIn"
-            >
-              Sign Up
-            </router-link>
-            <router-link :to="{ name: 'ArticleView' }" class="nav-link m-2"
-              >Review</router-link
-            >
-            <b-button variant="secondary" @click="logout" v-if="isLoggedIn"
-              >Logout</b-button
-            >
-          </div> -->
-    <!--</div>
-      </div>
-    </nav> -->
 
     <router-view />
   </div>
@@ -147,7 +99,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @font-face {
   font-family: "SUITE-Regular";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2")
@@ -163,13 +115,15 @@ export default {
   color: #2c3e50;
 }
 
-nav a {
-  font-weight: bold;
-  color: #4e667e;
+a {
+  color: #d99696;
 }
 
-nav a.router-link-exact-active {
-  color: #2c3e50;
+a.router-link-exact-active {
+  color: #8d81a6;
+}
+.nav-link:hover {
+  color: #8d81a6; /* Color for nav-link on hover */
 }
 .d-flex {
   display: flex;

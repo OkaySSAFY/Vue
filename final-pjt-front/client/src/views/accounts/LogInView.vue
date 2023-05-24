@@ -4,6 +4,7 @@
       <b-col md="6" lg="6" class="p-0">
         <div class="image-container"></div>
       </b-col>
+
       <b-col md="6" lg="6" class="p-4">
         <div class="login-form p-4">
           <h1 class="text-center mb-4"><strong>Sign in to Reelix</strong></h1>
@@ -18,32 +19,33 @@
 
           <br />
 
+          <div style="padding: 0 200px 0 200px">
             <b-row class="align-items-center justify-content-center">
               <div class="text-start">
-
                 <label for="input-username"> <p>아이디</p> </label>
-  
-                <b-form-input
-                  id="input-username"
-                  placeholder="ID"
-                  v-model="username"
-                  :state="nameState"
-                  aria-describedby="input-live-feedback"
-                  trim
-                  style="width: 70%"
-                ></b-form-input>
-  
-                <b-form-invalid-feedback
-                  id="input-username-feedback"
-                  class="text-right"
-                >
-                  아이디 4글자 이상 입력
-                </b-form-invalid-feedback>
               </div>
+              <b-form-input
+                id="input-username"
+                placeholder="ID"
+                v-model="username"
+                :state="nameState"
+                aria-describedby="input-username-feedback"
+                trim
+                style="width: 450px"
+              ></b-form-input>
+
+              <b-form-invalid-feedback
+            id="input-username-feedback"
+            v-if="!nameState"
+          >
+                아이디 4글자 이상 입력
+              </b-form-invalid-feedback>
             </b-row>
             <br />
             <b-row class="align-items-center justify-content-center">
-              <label for="input-password">비밀번호</label>
+              <div class="text-start">
+                <label for="input-password"><p>비밀번호</p></label>
+              </div>
               <b-form-input
                 id="input-password"
                 placeholder="PASSWORD"
@@ -54,19 +56,19 @@
                 type="password"
                 @keyup.enter="login"
                 autocomplete="false"
-                style="width: 70%"
+                style="width: 450px"
               ></b-form-input>
               <b-form-invalid-feedback
                 id="input-password-feedback"
+                v-if="!passwordState"
                 class="text-right"
               >
                 비밀번호 6글자 이상 입력
               </b-form-invalid-feedback>
             </b-row>
-
-
-          <br />
-          <b-button class="custom-button" @click="login">로그인</b-button>
+            <br />
+            <b-button class="custom-button" @click="login">로그인</b-button>
+          </div>
         </div>
       </b-col>
     </b-row>
@@ -86,14 +88,18 @@ export default {
   },
   computed: {
     nameState() {
-      return this.username.length >= 4 ? true : false;
+      return this.username.length >= 4 || this.username === "" ? true : false;
     },
     passwordState() {
-      return this.password.length >= 6 ? true : false;
+      return this.password.length >= 6 || this.password === "" ? true : false;
     },
   },
   methods: {
     login() {
+            if (!this.nameState || !this.passwordState) {
+        alert("아이디와 비밀번호를 올바르게 입력해주세요.");
+        return;
+      }
       axios({
         method: "post",
         url: "http://127.0.0.1:8000/auth/login/",
@@ -106,34 +112,21 @@ export default {
           console.log(res.data);
           this.$store.dispatch("login", res.data);
           this.$router.push({ name: "HomeView" });
-          // this.$store.commit('SAVE_TOKEN', res.data.key)
-          // this.$store.commit("SET_LOGIN_STATUS", true)
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    //     loginUser() {
-    // const credentials = {
-    //   username: this.username,
-    //   password: this.password,
-    // };
-    // this.$store.dispatch('login', credentials)
-    //   .then(() => {
-    //     // 로그인 성공 시 처리할 내용
-    //   })
-    //   .catch((error) => {
-    //     // 로그인 실패 시 처리할 내용
-    //     console.log(error)
-    //   });
-    // }
   },
 };
 </script>
 
 <style scoped>
-.login-form {
-  margin: auto;
+#input-username-feedback {
+  text-align: right;
+}
+#input-password-feedback {
+  text-align: right;
 }
 
 .image-container {
@@ -149,9 +142,7 @@ export default {
 }
 
 #notAmember {
-  color: #5111db;
+  color: #8613e4;
   text-decoration-line: none;
 }
-
-
 </style>

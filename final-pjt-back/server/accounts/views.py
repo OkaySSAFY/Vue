@@ -22,12 +22,11 @@ def userinfo(request):
     return Response(serializer.data)
 
 
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def ProfileView(request, username):
     User = get_user_model()
     user = User.objects.get(username=username)  # 현재 사용자
-    profile = {
-        'name': user.username,
-        'email': user.email,
-        # 필요한 프로필 정보를 추가하세요
-    }
-    return JsonResponse(profile)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)

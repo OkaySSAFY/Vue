@@ -13,6 +13,9 @@ from .forms import MovieForm, CommentForm
 from django.core import serializers
 from .serializers import MovieSerializer, CommentSerializer
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
 
 @api_view(['GET'])
 def index(request):
@@ -31,7 +34,6 @@ def detail(request, movie_pk):
 def comment_list(request):
     if request.method == 'GET':
         comments = Comment.objects.all()
-        # comments = get_list_or_404(Comment)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -39,7 +41,6 @@ def comment_list(request):
 @api_view(['POST'])
 def comment_create(request, movie_pk):
     movie = Movie.objects.get(pk=movie_pk)
-    # movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie=movie)
@@ -49,7 +50,6 @@ def comment_create(request, movie_pk):
 @api_view(['GET', 'DELETE', 'PUT'])
 def comment_detail(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-    # comment = get_object_or_404(Comment, pk=comment_pk)
 
     if request.method == 'GET':
         serializer = CommentSerializer(comment)
@@ -64,29 +64,40 @@ def comment_detail(request, comment_pk):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+        
+# @api_view(['POST'])
+# def search(request):
+#     if request.method == 'POST':
+#         search = request.data.get('search')
+#         keyword = Movie.objects.filter(title__icontains=search) | Movie.objects.filter(description__icontains=search)
+#         serializer = MovieSerializer(keyword, many=True)
+#         return Response(serializer.data)
+#     return Response([])
 
 
-# @require_POST
-# def likes(request, movie_pk):
+# @api_view(['POST'])
+# def likes(request, movie_pk, user_id):
+#     movie = Movie.objects.get(pk=movie_pk)
 #     if request.user.is_authenticated:
-#         movie = Movie.objects.get(pk=movie_pk)
 #         if movie.like_users.filter(pk=request.user.pk).exists():
 #             movie.like_users.remove(request.user)
 #         else:
 #             movie.like_users.add(request.user)
-#         return redirect('movies:index')
-#     return redirect('accounts:login')
+#         serializer = MovieSerializer(movie)
 
+#         return Response(serializer.data)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def likes(request, movie_id, user_id):
+    movie = Movie.objects.get(pk=movie_id)
 
-# @require_POST
-# def search(request):
-#     if request.method == 'POST':
-#         search = request.POST["search"]
-#         keyword = Movie.objects.filter(title__icontains=search) | Movie.objects.filter(
-#             description__icontains=search)
-#         context = {
-#             'search': search,
-#             'keyword': keyword,
-#         }
-#         return render(request, 'movies/search.html', context)
-#     return render(request, 'movies/search.html', {})
+    if movie.Like_users.filter(pk=user_id).exists():
+        movie.Like_users.remove(user_id)
+    else:
+        movie.Like_users.add(user_id)
+    
+    movie.save()
+    serializer = MovieSerializer(movie)
+
+    return Response(serializer.data)

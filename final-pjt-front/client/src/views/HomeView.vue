@@ -1,21 +1,16 @@
 <template>
   <div class="home">
-    <!-- <div @click="home"> -->
-    <!-- <img alt="Vue logo" src="../assets/Reelix.png" /> -->
-    <!-- </div> -->
     <!-- <div>
       <i class="material-icons">home</i>
       <i class="material-icons star">star</i>
-      <i class="material-icons favorite">favorite</i>
       <i class="material-icons">check</i>
     </div> -->
-    <KeywordView />
     <div id="main-view" class="with-background">
     <MainView />
     </div>
     <div class="container">
-      <!-- <MovieJson /> -->
       <NowPlayingView />
+      <br>
       <PopularView />
     </div>
   </div>
@@ -23,26 +18,17 @@
 
 <script>
 // @ is an alias to /src
-import KeywordView from "@/components/KeywordView.vue";
 import MainView from "@/components/MainView.vue";
-// import MovieJson from "@/components/MovieJson.vue";
 import NowPlayingView from "@/components/NowPlayingView.vue";
 import PopularView from "@/components/PopularView.vue";
 
 export default {
   name: "HomeView",
   components: {
-    KeywordView,
     MainView,
-    // MovieJson,
     NowPlayingView,
     PopularView,
   },
-  // methods: {
-  // home() {
-  //   this.$store.router.push({name: 'HomeView'})
-  // }
-  // }
 };
 </script>
 

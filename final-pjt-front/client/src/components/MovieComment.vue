@@ -6,8 +6,11 @@
     </form>
 
     <div v-for="comment in comments" :key="comment.id">
-      <li>{{ comment.content }}</li>
+      <li v-if="comment.movie == movieId">
+        {{ comment.content }}
+      </li>
     </div>
+
     <hr />
   </div>
 </template>
@@ -29,12 +32,16 @@ export default {
     return {
       content: "",
       comments: [],
+      // movie: null,
     };
   },
   methods: {
     createComment() {
       const content = this.content;
       const movieId = this.movieId;
+      console.log(movieId);
+      console.log(this.comments[9].movie);
+      // const movieId = this.movie.id;
       // const userId = this.userId;
 
       axios
@@ -68,6 +75,10 @@ export default {
     },
   },
   created() {
+    // this.movie = { id: this.movieId };
+    // console.log(this.movie);
+    // console.log(this.movie.id);
+    // console.log(this.movieId);
     this.getComments(); // 컴포넌트 생성 시 댓글 목록을 가져옴
   },
 };

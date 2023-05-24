@@ -1,11 +1,25 @@
 <template>
   <div>
-    <h1>키워드별 영화추천 뷰 입니당</h1>
-    <h1>Recommendations for {{ keyword }}</h1>
+    <!-- <h1>키워드별 영화추천 뷰 입니당</h1> -->
+    <div>
+      <div
+        class="keyword-image"
+        :style="{ backgroundImage: `url(${getMovieImage()})` }"
+      >
+        <h3 id="keywordTitle"># {{ keyword }}</h3>
+      </div>
+    </div>
+    <!-- <img
+      :src="getMovieImage(movieId)"
+      class="d-block img-fluid movie-image"
+      :alt="keyword"
+      id="keywordPicture"
+      style="height: 500px"
+    /> -->
     <div class="container">
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <div v-for="movie in filteredMovies" :key="movie.id" class="col p-1">
-          <div class="card w-100">
+          <div class="card w-100" style="border-radius: 10px;">
             <router-link
               :to="{
                 name: 'MovieDetail',
@@ -16,6 +30,7 @@
                 :src="`https://image.tmdb.org/t/p/w300/${movie.poster_path}`"
                 class="d-block img-fluid movie-image"
                 :alt="movie.title"
+                style="border-radius: 10px;"
               />
             </router-link>
           </div>
@@ -44,6 +59,16 @@ export default {
         스펙터클: [12, 28],
         스트레스_해소: [27, 9648],
       },
+      keywordImages: {
+        새로운_세계: require("@/assets/sf.jpg"),
+        유난히_긴_밤: require("@/assets/music.jpg"),
+        사랑: require("@/assets/love.jpg"),
+        위로: require("@/assets/family.jpg"),
+        하하하: require("@/assets/comedy.jpg"),
+        몰입: require("@/assets/crime.jpg"),
+        스펙터클: require("@/assets/action.jpg"),
+        스트레스_해소: require("@/assets/horror.jpg"),
+      },
     };
   },
   computed: {
@@ -61,6 +86,11 @@ export default {
         });
       });
       return Array.from(filteredSet);
+    },
+  },
+  methods: {
+    getMovieImage() {
+      return this.keywordImages[this.keyword];
     },
   },
   created() {
@@ -84,8 +114,21 @@ export default {
 }
 
 .card {
-  /* 카드 크기 설정 */
   width: 200px;
   height: 450px;
+}
+
+.keyword-image {
+  width: 100%;
+  height: 450px;
+  background-size: cover;
+  background-position: center;
+}
+
+#keywordTitle {
+  color: white;
+  text-align: right;
+  padding: 15px;
+
 }
 </style>

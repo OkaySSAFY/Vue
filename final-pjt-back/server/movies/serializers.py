@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Genre, Cast, Movie, Comment
+from django.contrib.auth import get_user_model
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -31,4 +32,5 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
-        read_only_fields = ('user', )
+
+    

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     articles: [],
     token: null,
     isLoggedIn: false,
+    user: null,
   },
   getters: {
     isLogin(state) {
@@ -24,9 +25,24 @@ export default new Vuex.Store({
     GET_ARTICLES(state, articles) {
       state.articles = articles;
     },
+    SAVE_USER(state, user) {
+      state.user = user
+      console.log(state.user)
+    },
     //auth
     SAVE_TOKEN(state, token) {
       state.token = token;
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:8000/accounts/userinfo/",
+        headers: {
+          Authorization: `Bearer ${this.state.token}`,
+        },
+      }).then((res) => {
+        this.commit('SAVE_USER', res.data)
+        // console.log(state.user)
+
+      });
     },
     // RESET_STATE(state) {
     //   state.token = null; // 토큰 초기화
@@ -38,6 +54,9 @@ export default new Vuex.Store({
     SET_LOGIN_STATUS(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
     },
+    // SEARCH_MOVIE(state, movies) {
+    //   state.search_movies = movies
+    // },
   },
   actions: {
     getArticles(context) {
@@ -63,6 +82,24 @@ export default new Vuex.Store({
       context.commit("SAVE_TOKEN", data.access);
       context.commit("SET_LOGIN_STATUS", true); // 로그인 상태 변경
     },
+    // search_movie(context, query) {
+    //   const BASE_URL = "http://127.0.0.1:8000/movies/search"
+    //   axios.post(BASE_URL, {
+    //     params: {
+    //       query: query,
+    //     }
+    //   })
+    //   .then((response) => {
+    //     const movies = response.data
+    //     context.commit("SEARCH_MOVIE", movies)
+    //     if (router.currentRoute.name !== "SearchView") {
+    //       router.push({name:"SearchView"})
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
+    // },
     // login(context, credentials) {
     //   return new Promise((resolve, reject) => {
     //     axios

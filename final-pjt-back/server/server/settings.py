@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'django.contrib.sites',
 
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
