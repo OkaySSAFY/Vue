@@ -55,10 +55,10 @@ const routes = [
     props: true,
   },
   {
-    path: '/movies/search/',
+    path: '/search/:input',
     name: 'SearchMovieView',
     component: () => import("../views/SearchMovieView.vue"),
-    // props: true,
+    props: true,
   },
 ];
 

@@ -95,7 +95,7 @@ export default {
   },
   created() {
     axios
-      .get(`${API_URL}/movies/`) // 실제로는 Django 서버의 API 엔드포인트를 사용해야 합니다.
+      .get(`${API_URL}/movies/`) 
       .then((response) => {
         console.log("성공");
         this.movies = response.data;
@@ -108,6 +108,14 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .movie-image {
   width: 100%;
   height: 450px;
@@ -129,6 +137,6 @@ export default {
   color: white;
   text-align: right;
   padding: 15px;
-
+  font-family: "GyeonggiTitleM";
 }
 </style>

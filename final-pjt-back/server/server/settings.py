@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     # cors
     'corsheaders',
 
+    'django_extensions',
+
     'rest_framework',
     'rest_framework.authtoken',
     'allauth',

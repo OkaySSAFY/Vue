@@ -82,11 +82,6 @@ export default {
       password2: "",
     };
   },
-  // computed: {
-  //   passwordMismatch() {
-  //     return this.password1 !== this.password2;
-  //   },
-  // },
   methods: {
     checkPasswordMismatch() {
       this.passwordMismatch = this.password1 !== this.password2;
@@ -96,7 +91,6 @@ export default {
         alert("비밀번호가 일치하지 않습니다.");
         return;
       }
-
       axios({
         method: "post",
         url: "http://127.0.0.1:8000/auth/signup/",
@@ -144,5 +138,13 @@ label {
 #Amember {
   color: #8613e4;
   text-decoration-line: none;
+}
+.form-control:focus {
+  border-color: #ddb1b1;
+  box-shadow: 0 0 0 0.2rem #fad7d7;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.3s ease #d99696;
+  border-radius: 0.5rem;
 }
 </style>

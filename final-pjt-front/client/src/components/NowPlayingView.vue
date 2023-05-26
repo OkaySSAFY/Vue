@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>현재 상영중 | 개봉 예정작</h1>
+    <h3>Now Playing</h3>
     <div id="carouselNowPlaying" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
@@ -31,10 +31,9 @@
                     :src="getPoster(movie.poster_path)"
                     class="d-block w-100"
                     :alt="movie.title"
-                    style="height: 30rem; border-radius: 10px;"
-                  />                  
+                    style="height: 30rem; border-radius: 10px"
+                  />
                 </router-link>
-                  <!-- <h3>{{ movie.title }}</h3> -->
               </div>
             </div>
           </div>
@@ -92,11 +91,10 @@ export default {
   },
   created() {
     axios
-      .get(`${API_URL}/movies/`) // 실제로는 Django 서버의 API 엔드포인트를 사용해야 합니다.
+      .get(`${API_URL}/movies/`)
       .then((response) => {
-        // release_date가 2023-05-01 이후인 데이터만 가져오도록 필터링
         this.movies = response.data.filter(
-          (movie) => movie.release_date >= "2023-05-01"
+          (movie) => movie.release_date >= "2023-04-10"
         );
       })
       .catch((error) => {
@@ -106,7 +104,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+h3 {
+  font-family: "GyeonggiTitleM";
+
+  text-align: left;
+  /* color: #8d81a6; */
+}
 .movie-item {
   text-align: center;
 }

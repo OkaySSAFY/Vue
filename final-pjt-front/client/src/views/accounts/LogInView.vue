@@ -28,43 +28,45 @@
                 id="input-username"
                 placeholder="ID"
                 v-model="username"
-                :state="nameState"
                 aria-describedby="input-username-feedback"
                 trim
-                style="width: 450px"
+                style="width: 450px; border-color: lightgray"
+                class="form-control"
               ></b-form-input>
 
-              <b-form-invalid-feedback
-            id="input-username-feedback"
-            v-if="!nameState"
-          >
-                아이디 4글자 이상 입력
-              </b-form-invalid-feedback>
+              <!-- <b-form-invalid-feedback
+                id="input-username-feedback"
+                style="color: #d99696"
+              >
+                아이디 2글자 이상 입력
+              </b-form-invalid-feedback> -->
             </b-row>
             <br />
             <b-row class="align-items-center justify-content-center">
               <div class="text-start">
                 <label for="input-password"><p>비밀번호</p></label>
               </div>
+
               <b-form-input
                 id="input-password"
                 placeholder="PASSWORD"
                 v-model="password"
-                :state="passwordState"
                 aria-describedby="input-password-feedback"
                 trim
                 type="password"
                 @keyup.enter="login"
                 autocomplete="false"
-                style="width: 450px"
+                style="width: 450px; border-color: lightgray"
+                class="form-control"
               ></b-form-input>
-              <b-form-invalid-feedback
+
+              <!-- <b-form-invalid-feedback
                 id="input-password-feedback"
-                v-if="!passwordState"
                 class="text-right"
+                style="color: #d99696"
               >
                 비밀번호 6글자 이상 입력
-              </b-form-invalid-feedback>
+              </b-form-invalid-feedback> -->
             </b-row>
             <br />
             <b-button class="custom-button" @click="login">로그인</b-button>
@@ -86,20 +88,20 @@ export default {
       password: "",
     };
   },
-  computed: {
-    nameState() {
-      return this.username.length >= 4 || this.username === "" ? true : false;
-    },
-    passwordState() {
-      return this.password.length >= 6 || this.password === "" ? true : false;
-    },
-  },
+  // computed: {
+  //   nameState() {
+  //     return this.username.length >= 2 || this.username === "" ? true : false;
+  //   },
+  //   passwordState() {
+  //     return this.password.length >= 6 || this.password === "" ? true : false;
+  //   },
+  // },
   methods: {
     login() {
-            if (!this.nameState || !this.passwordState) {
-        alert("아이디와 비밀번호를 올바르게 입력해주세요.");
-        return;
-      }
+      // if (!this.nameState || !this.passwordState) {
+      //   alert("아이디와 비밀번호를 올바르게 입력해주세요.");
+      //   return;
+      // }
       axios({
         method: "post",
         url: "http://127.0.0.1:8000/auth/login/",
@@ -144,5 +146,13 @@ export default {
 #notAmember {
   color: #8613e4;
   text-decoration-line: none;
+}
+.form-control:focus {
+  border-color: #ddb1b1;
+  box-shadow: 0 0 0 0.2rem #fad7d7;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.3s ease #d99696;
+  border-radius: 0.5rem;
 }
 </style>

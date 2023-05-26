@@ -1,8 +1,7 @@
 <template>
   <div class="article-list">
-    <h3>Article List</h3>
     <ArticleListItem
-      v-for="article in articles"
+      v-for="article in articles.slice().reverse()"
       :key="article.id"
       :article="article"
     />
@@ -22,16 +21,10 @@ export default {
       return this.$store.state.articles;
     },
   },
-
-  // created() {
-  //   const payload = this.$store.state.articles; 
-  //   this.$store.dispatch('getArticles', payload)
-  // }
-
 };
 </script>
 
-<style>
+<style scoped>
 .article-list {
   text-align: start;
 }

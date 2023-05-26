@@ -73,7 +73,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .with-background {
   background-image: url("@/assets/AboutTime.jpg");
@@ -88,7 +87,7 @@ export default {
   border-color:whitesmoke;
 }
 .btn:hover {
-  color: white; /* Color for nav-link on hover */
+  color: white; 
   background-color: #d99696;
   border: none;
 }

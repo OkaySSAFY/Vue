@@ -1,10 +1,7 @@
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-# Authentication Decorators
-# from rest_framework.decorators import authentication_classes
 
-# permission Decorators
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
@@ -32,7 +29,6 @@ def article_list(request):
 
 @api_view(['GET', 'DELETE', 'PUT'])
 def article_detail(request, article_pk):
-    # article = Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
 
     if request.method == 'GET':

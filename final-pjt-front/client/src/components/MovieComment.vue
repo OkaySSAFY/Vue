@@ -1,15 +1,16 @@
 <template>
   <div>
-    <form @submit.prevent="createComment">
-      <input type="text" v-model="content" />
-      <div class="btn btn-outline secondary" @click="saveComment">저장</div>
-    </form>
-
+    <b-form @submit.prevent="createComment" class="d-flex justify-content-center align-items-center">
+        <b-input v-model="content" style="width: 700px;" class="m-3"/>
+        <b-button id="save-btn" @click="saveComment">저장</b-button>
+    </b-form>
+    <br />
     <div v-for="comment in comments" :key="comment.id">
-      <li v-if="comment.movie == movieId">
+      <h5 v-if="comment.movie == movieId">
         {{ comment.content }}
-      </li>
+      </h5>
     </div>
+    <br>
 
     <hr />
   </div>
@@ -32,7 +33,6 @@ export default {
     return {
       content: "",
       comments: [],
-      // movie: null,
     };
   },
   methods: {
@@ -40,16 +40,13 @@ export default {
       const content = this.content;
       const movieId = this.movieId;
       console.log(movieId);
-      console.log(this.comments[9].movie);
-      // const movieId = this.movie.id;
-      // const userId = this.userId;
+      
 
       axios
         .post(`${API_URL}/movies/${movieId}/comments/`, { content })
         .then((response) => {
           this.comments.push(response.data);
           console.log("댓글 생성 성공");
-          // this.getComments(); // 댓글 목록을 다시 불러옴
         })
         .catch((error) => {
           console.error("댓글 생성 실패", error);
@@ -84,4 +81,26 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+#save-btn {
+  background-color: #d99696;
+  border: none;
+}
+
+.form-control:focus {
+  border-color: #ddb1b1;
+  box-shadow: 0 0 0 0.2rem #fad7d7;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.3s ease #d99696;
+  border-radius: 0.5rem;
+}
+</style>

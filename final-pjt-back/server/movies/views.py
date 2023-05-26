@@ -26,7 +26,7 @@ def index(request):
 
 @api_view(['GET'])
 def detail(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie = Movie.objects.get(pk=movie_pk)
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
@@ -65,28 +65,15 @@ def comment_detail(request, comment_pk):
             serializer.save()
             return Response(serializer.data)
         
-# @api_view(['POST'])
-# def search(request):
+# @api_view(['GET'])
+# def search(request, inputData):
 #     if request.method == 'POST':
 #         search = request.data.get('search')
-#         keyword = Movie.objects.filter(title__icontains=search) | Movie.objects.filter(description__icontains=search)
+#         keyword = Movie.objects.filter(title__icontains=search) | Movie.objects.filter(overview__icontains=search)
 #         serializer = MovieSerializer(keyword, many=True)
 #         return Response(serializer.data)
-#     return Response([])
+    # return Response([])
 
-
-# @api_view(['POST'])
-# def likes(request, movie_pk, user_id):
-#     movie = Movie.objects.get(pk=movie_pk)
-#     if request.user.is_authenticated:
-#         if movie.like_users.filter(pk=request.user.pk).exists():
-#             movie.like_users.remove(request.user)
-#         else:
-#             movie.like_users.add(request.user)
-#         serializer = MovieSerializer(movie)
-
-#         return Response(serializer.data)
-    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def likes(request, movie_id, user_id):

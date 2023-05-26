@@ -8,6 +8,6 @@ urlpatterns = [
     path('<str:movie_pk>/comments/', views.comment_create, name='comment_create'),
     path('<str:movie_pk>/comments/<int:comment_pk>/',
          views.comment_detail, name='comment_detail'),
-    # path('search/', views.search, name='search'),
     path('<int:movie_id>/<int:user_id>/likes/', views.likes, name='likes'),
+    # path('search/<str:inputData>/', views.search, name='search'),
 ]

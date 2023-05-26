@@ -1,45 +1,57 @@
 <template>
   <div>
-    <h1>프로필 페이지</h1>
 
-      <h1>Wish List</h1>
+    <br />
+      <br />
+    <div class="d-flex justify-content-center align-items-center">
+      <h2>
+        <strong>{{ user.username }} 's Wish List</strong>
+        <i class="material-icons m-2">favorite</i>
+      </h2>
+    </div>
 
-      <p>이름: {{ user.username }}</p>
-      <button @click="getMovie">버튼</button>
-
-      <!-- <MovieDetail :movie="movie" @add-to-wishlist="addToWishlist" /> -->
-
+    <br />
+    <div class="container">
+      <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        <div v-for="movie in movies" :key="movie.id">
+          <div class="card w-100" style="border-radius: 10px">
+            <router-link
+              :to="{
+                name: 'MovieDetail',
+                params: { id: movie.id.toString() },
+              }"
+            >
+              <img
+                :src="`https://image.tmdb.org/t/p/w300/${movie.poster_path}`"
+                class="d-block img-fluid movie-image"
+                :alt="movie.title"
+                style="border-radius: 10px"
+              />
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-// import MovieDetail from "@/components/MovieDetail"
 const API_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "ProfileView",
-  // components: {
-  //   MovieDetail
-  // },
   data() {
     return {
       profile: null,
-      movie: {
-        id: "",
-        title: "",
-      },
+      movies: [],
     };
   },
   props: {
-    username : {
+    username: {
       type: String,
       required: true,
     },
-    // id: {
-    //   type: String,
-    //   required: true,
-    // },
   },
   computed: {
     user() {
@@ -47,35 +59,31 @@ export default {
     },
   },
 
-  methods: {
-    getMovie() {
-      axios
-        .get(`${API_URL}/movies/${this.id}`)
-        .then((response) => {
-          this.movie = response.data;
-          console.log(response.data)
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    // addToWishlist({ movieId, userId }) {
-    //   // 이벤트 핸들러에서 전달받은 영화 정보를 사용
-    //   console.log("Movie ID:", movieId);
-    //   console.log("User ID:", userId);
-
-    //   // 이후 원하는 동작 수행
-    //   // 예시: 해당 영화 정보를 가져오기
-    //   axios.get(`${API_URL}/movies/${movieId}`)
-    //     .then(response => {
-    //       const movie = response.data;
-    //       console.log("Movie:", movie);
-    //       // 가져온 영화 정보를 사용하여 원하는 작업 수행
-    //     })
-    //     .catch(error => {
-    //       console.error(error);
-    //     });
-    // }
+  created() {
+    axios
+      .get(`${API_URL}/movies/`)
+      .then((response) => {
+        const movies = response.data.filter((movie) =>
+          movie.Like_users.includes(this.user.id)
+        );
+        console.log(movies);
+        this.movies.push(...movies);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 };
 </script>
+
+<style scoped>
+.movie-image {
+  width: 100%;
+  height: 450px;
+}
+
+.card {
+  width: 200px;
+  height: 450px;
+}
+</style>

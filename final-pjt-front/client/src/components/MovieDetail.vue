@@ -8,26 +8,47 @@
           img-left
           class="mb-3 img-fluid"
         >
-          <b-card-text>
-            <h1>{{ movie.title }}</h1>
+          <b-card-text style="padding: 50px">
             <br />
+
+            <h2 style="text-align: center">{{ movie.title }}</h2>
+            <br />
+
             <div
-              class="d-flex justify-content-center align-items-center favorite"
+              class="d-flex justify-content-center align-items-center favorite btn btn-outline-secondary"
+              :class="{ clicked: isLike }"
+              style="width: 250px; margin: auto"
+              id="wish-btn"
               @click="wishCreate"
             >
-              <i class="material-icons">favorite</i
-              ><span style="color: #d99696"><strong>Wish</strong></span>
+              <i class="material-icons m-1">favorite</i
+              ><span><strong>찜 (Wish List)</strong></span>
             </div>
-            <p><strong>줄거리 : </strong> {{ movie.overview }}</p>
-            <p><strong>Popularity:</strong> {{ movie.popularity }}</p>
-            <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-            <p><strong>Vote Average:</strong> {{ movie.vote_average }}</p>
-            <p><strong>Vote Count:</strong> {{ movie.vote_count }}</p>
+
+            <div class="container mt-5" style="text-align: left">
+              <p class="px-5">
+                <strong>줄거리 : </strong> {{ movie.overview }}
+              </p>
+            </div>
+            <div class="d-flex col justify-content-between align-items-center">
+              <div class="col d-flex justify-content-center align-items-center">
+                <i class="material-icons m-1" style="color: #f8e80d">star</i>
+                <span><strong>평점 : </strong> {{ movie.vote_average }}</span>
+              </div>
+              <div class="col">
+                <span><strong>개봉일 : </strong> {{ movie.release_date }}</span>
+              </div>
+            </div>
           </b-card-text>
         </b-card>
       </div>
     </div>
-    <MovieComment :movieId="movie.id.toString()" />
+    <br />
+    <div>
+      <h4>한 줄 감상평</h4>
+      <MovieComment :movieId="this.movie.id.toString()" />
+    </div>
+    <br />
     <h2>배우</h2>
     <b-card>
       <div class="scroll-container">
@@ -52,7 +73,7 @@
         </div>
       </div>
     </b-card>
-
+    <br />
     <h2>예고편</h2>
     <div class="iframebox">
       <iframe
@@ -60,9 +81,10 @@
         frameborder="0"
         allowfullscreen
         width="100%"
-        height="700px"
+        height="600px"
       ></iframe>
     </div>
+    <br />
   </div>
 </template>
 
@@ -77,26 +99,24 @@ export default {
   data() {
     return {
       movie: {
-        id: "",
-        title: "",
       },
+      isLike: false,
       videoUrl: null,
+      // isClicked: false,
+      // clickedUserId: null,
     };
   },
   computed: {
     user() {
       return this.$store.state.user;
     },
+
   },
   props: {
     id: {
       type: String,
       required: true,
     },
-    // movie: {
-    //   type: Object,
-    //   required: true,
-    // },
   },
   mounted() {
     const movieId = this.id;
@@ -104,7 +124,13 @@ export default {
   },
   methods: {
     wishCreate() {
-      // console.log(this.$store.state.user)
+  //     if (this.user.id !== this.clickedUserId) {
+  //   return;
+  // }
+      // this.isClicked = !this.isClicked;
+      console.log(this.movie)
+      // localStorage.setItem("isClicked", this.isClicked);
+
       axios({
         method: "post",
         url: `http://127.0.0.1:8000/movies/${this.id}/${this.user.id}/likes/`,
@@ -114,16 +140,19 @@ export default {
       })
         .then((res) => {
           console.log(res);
+          this.movie = res.data
+          if (this.movie.Like_users.includes(this.user.id)) {
+            this.isLike = true
+          } else {
+            this.isLike = false
+          }
+
+          console.log(this.isLike)
+
         })
         .catch((err) => {
           console.log(err);
         });
-      const movieId = this.id;
-
-      this.$emit("add-to-wishlist", {
-        movieId: movieId,
-        userId: this.user.id,
-      });
     },
     getProfile(profilePath) {
       if (profilePath) {
@@ -162,8 +191,9 @@ export default {
         });
     },
   },
-  // Detail 페이지 접속 시 해당 영화 정보 출력
   created() {
+    const isClicked = localStorage.getItem("isClicked");
+    this.isClicked = isClicked === "true";
     axios
       .get(`${API_URL}/movies/${this.id}`)
       .then((response) => {
@@ -177,13 +207,29 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 #poster-img {
   width: 30%;
 }
 
+h4 {
+  font-family: "GyeonggiTitleM";
+}
+
+h2 {
+  font-family: "GyeonggiTitleM";
+  text-align: left;
+}
 .scroll-container {
   overflow-x: auto;
-  position: relative; /* 추가 */
+  position: relative; 
 }
 
 .scroll-content {
@@ -196,17 +242,22 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 8px; /* 원하는 높이 조정 */
+  height: 8px; 
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0),
     white 50%,
     white
-  ); /* 스크롤 그라데이션 */
+  ); 
 }
 
 .iframebox {
   width: 100%;
+}
+
+#wish-btn {
+  align-items: center;
+  border-color: #d99696;
 }
 
 .favorite {
@@ -216,5 +267,14 @@ export default {
 
 .favorite:hover {
   transform: scale(1.2);
+  background-color: #d99696;
+  border-color: #d99696;
+  color: white;
+}
+
+.clicked {
+  background-color: #d99696;
+  border-color: #d99696;
+  color: white;
 }
 </style>

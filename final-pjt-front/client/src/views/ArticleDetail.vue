@@ -1,30 +1,98 @@
 <template>
   <div>
-    <h1>Article Detail</h1>
-    <div v-if="!isEditMode">
-      <p>글 번호 : {{ article.id }}</p>
-      <p>제목 : {{ article.title }}</p>
-      <p>내용 : {{ article.content }}</p>
-      <p>작성시간: {{ formatDateTime(article.created_at) }}</p>
-      <p>수정시간: {{ formatDateTime(article.updated_at) }}</p>
-      <div class="btn btn-outline-secondary" @click="toggleEditMode">
-        수정하기
+    <br />
+    <br />
+    <div class="container mt-5" v-if="!isEditMode">
+      <div id="text-left">
+        <p>No. {{ article.id }}</p>
+      </div>
+      <h2>
+        <strong>{{ article.title }}</strong>
+      </h2>
+      <div id="text-right">
+        <p>{{ formatDateTime(article.updated_at) }}</p>
+      </div>
+      <hr />
+      <br />
+      <h4>{{ article.content }}</h4>
+      <br />
+      <br />
+      <div class="d-flex justify-content-center d-grid gap-2">
+        <!-- 수정하기 버튼 -->
+        <div
+          class="d-flex justify-content-center btn btn-outline-secondary"
+          @click="toggleEditMode"
+        >
+          <i class="material-icons mx-1">edit</i><span>EDIT</span>
+        </div>
+
+        <!-- 목록으로 가기 -->
+        <router-link
+          :to="{ name: 'ArticleView' }"
+          class="d-flex justify-content-center btn btn-outline-secondary"
+          id="list"
+        >
+          <i class="material-icons mx-1">arrow_back</i>Back</router-link
+        >
       </div>
     </div>
     <!-- 수정 폼 -->
     <div v-if="isEditMode">
-      <label for="input-title">제목</label>
-      <input type="text" id="input-title" v-model="updatedArticle.title" />
+      <div class="container">
+        <h1><strong>EDIT Page</strong></h1>
+        <hr />
 
-      <label for="input-content">내용</label>
-      <textarea id="input-content" v-model="updatedArticle.content"></textarea>
+        <div v-if="isEditMode">
+          <div style="padding: 30px 100px 30px 100px">
+            <!-- <div id="text-right"> -->
+            <p id="text-right">No. {{ article.id }}</p>
+            <!-- </div> -->
+            <div class="text-start">
+              <label for="input-title" class="form-label">제목</label>
+            </div>
+            <input
+              type="text"
+              id="input-title"
+              v-model="updatedArticle.title"
+              class="form-control"
+            />
+            <br />
+            <div class="text-start">
+              <label for="input-content" class="form-label">내용</label>
+            </div>
+            <textarea
+              id="input-content"
+              v-model="updatedArticle.content"
+              class="form-control"
+              style="height: 220px"
+            ></textarea>
+          </div>
 
-      <div class="btn btn-outline-primary" @click="saveArticle">저장</div>
-      <div class="btn btn-outline-secondary" @click="cancelEditMode">취소</div>
-    </div>
+          <div class="d-flex justify-content-center d-grid gap-2">
+            <button
+              class="d-flex justify-content-center btn btn-outline-secondary"
+              @click="saveArticle"
+            >
+              <i class="material-icons mx-1">save</i>저장
+            </button>
+            <button
+              class="d-flex justify-content-center btn btn-outline-secondary"
+              @click="cancelEditMode"
+            >
+              <i class="material-icons mx-1">cancel</i>취소
+            </button>
 
-    <div class="btn btn-outline-danger" @click="deleteArticle(article)">
-      삭제하기
+            <!-- 삭제하기 버튼 -->
+            <div
+              class="d-flex justify-content-center btn btn-outline-secondary"
+              @click="deleteArticle(article)"
+              id="detail-view"
+            >
+              <i class="material-icons mx-1">delete</i>삭제
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -39,14 +107,12 @@ export default {
   name: "ArticleDetail",
   data() {
     return {
-      article: {
-        title: "",
-        content: "",
-      },
+      article: "",
       isEditMode: false,
       updatedArticle: {
         title: "",
         content: "",
+        updated_at: "",
       },
     };
   },
@@ -64,6 +130,7 @@ export default {
           this.article = res.data;
           this.updatedArticle.title = this.article.title;
           this.updatedArticle.content = this.article.content;
+          this.updatedArticle.updated_at = this.article.updated_at;
         })
         .catch((err) => {
           console.log(err);
@@ -98,7 +165,6 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          // this.article = res.data;
           alert("게시글이 삭제되었습니다!");
           this.$store.dispatch("getArticles");
           router.push({ name: "ArticleView" });
@@ -113,3 +179,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#text-left {
+  text-align: left;
+}
+#text-right {
+  text-align: right;
+}
+
+.form-control:focus {
+  border-color: #ddb1b1;
+  box-shadow: 0 0 0 0.2rem #fad7d7;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.3s ease #d99696;
+  border-radius: 0.5rem;
+}
+</style>

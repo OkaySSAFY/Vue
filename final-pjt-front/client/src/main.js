@@ -13,6 +13,11 @@ Vue.use(BootstrapVueIcons);
 
 Vue.config.productionTip = false;
 
+router.afterEach(() => {
+  window.scrollTo(0, 0);
+});
+
+
 new Vue({
   store,
   router,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>인기 영화</h1>
+    <h3>Popular MOVIE</h3>
     <div id="carouselPopular" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
@@ -22,15 +22,18 @@
             <div class="col-3" v-for="movie in group" :key="movie.id">
               <div class="movie-item">
                 <router-link
-                  :to="{ name: 'MovieDetail', params: { id: movie.id.toString() } }"
+                  :to="{
+                    name: 'MovieDetail',
+                    params: { id: movie.id.toString() },
+                  }"
                 >
-                <img
-                  :src="getPoster(movie.poster_path)"
-                  class="d-block w-100"
-                  :alt="movie.title"
-                  style="height: 30rem; border-radius: 10px;"
-                />
-              </router-link>
+                  <img
+                    :src="getPoster(movie.poster_path)"
+                    class="d-block w-100"
+                    :alt="movie.title"
+                    style="height: 30rem; border-radius: 10px"
+                  />
+                </router-link>
                 <!-- <h3>{{ movie.title }}</h3> -->
               </div>
             </div>
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 const API_URL = "http://127.0.0.1:8000";
 
 export default {
@@ -89,10 +92,12 @@ export default {
   },
   created() {
     axios
-      .get(`${API_URL}/movies/`) // 실제로는 Django 서버의 API 엔드포인트를 사용해야 합니다.
+      .get(`${API_URL}/movies/`) 
       .then((response) => {
-        // release_date가 2023-05-01 이후인 데이터만 가져오도록 필터링
-        this.movies = response.data.filter(movie => movie.vote_average >= '8.3');
+
+        this.movies = response.data.filter(
+          (movie) => movie.vote_average >= "8.3"
+        );
       })
       .catch((error) => {
         console.error(error);
@@ -101,7 +106,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+h3 {
+  font-family: "GyeonggiTitleM";
+  text-align: left;
+}
+
 .movie-item {
   text-align: center;
 }

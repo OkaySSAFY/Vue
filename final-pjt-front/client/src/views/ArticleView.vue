@@ -1,9 +1,18 @@
 <template>
   <div>
-    <h1>후기 게시판</h1>
-    <router-link :to="{ name: 'CreateView' }" v-if="isLoggedIn"
-      >[작성하기]</router-link
-    >
+    <div class="container p-5">
+      <h1><strong>Review Board</strong></h1>
+<br>
+      <router-link
+        :to="{ name: 'CreateView' }"
+        v-if="isLoggedIn"
+        id="create-btn"
+        class="d-flex justify-content-center btn btn-outline-secondary"
+      >
+        <i class="material-icons" style="color: #fffff">add</i
+        ><span>New</span></router-link
+      >
+    </div>
     <ArticleList />
     <hr />
   </div>
@@ -29,12 +38,11 @@ export default {
   created() {
     this.getArticles();
   },
+  
   methods: {
-
     getArticles() {
       if (this.isLogin) {
         this.$store.dispatch("getArticles");
-
       } else {
         alert("로그인이 필요합니다!");
         this.$router.push({ name: "LogInView" });
@@ -73,4 +81,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#create-btn {
+  text-decoration: none;
+}
+</style>
